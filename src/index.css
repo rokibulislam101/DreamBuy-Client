@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Foldit:wght@100..900&family=Sen:wght@400..800&display=swap');
+
+.sen-style {
+  font-family: "Sen", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.foldit-style {
+  font-family: "Foldit", sans-serif;
+  font-optical-sizing: auto;
+}
