@@ -1,6 +1,6 @@
-# Dream Buy Online Shop!
+<h3># Dream Buy Online Shop!</h3>
 
-# Locally project running setup
+<p># Locally project running setup</p>
 git clone git-link
 
 cd your-repository
