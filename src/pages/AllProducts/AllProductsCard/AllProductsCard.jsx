@@ -11,29 +11,37 @@ const AllProductsCard = () => {
   const [allProducts, setAllProducts] = useState([]);
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1); // Pagination system
   const recordsPerPage = 12;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
   const records = allProducts.slice(firstIndex, lastIndex);
   const nPage = Math.ceil(allProducts.length / recordsPerPage);
   const numbers = [...Array(nPage + 1).keys()].slice(1);
+  const [sortOption, setSortOption] = useState(''); // Default sorting option
 
   const { cartDispatch } = useContext(CartContext);
   const { wishlistDispatch } = useContext(WishlistContext);
 
   useEffect(() => {
     const fetchAllProducts = async () => {
-      try {
-        const response = await axiosSecure.get('/product');
-        setAllProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching AllProducts:', error);
+      const response = await axiosSecure.get('/product');
+      let products = response.data;
+
+      if (sortOption === 'Low to High') {
+        products = products.sort((a, b) => a.discountPrice - b.discountPrice);
+      } else if (sortOption === 'High to Low') {
+        products = products.sort((a, b) => b.discountPrice - a.discountPrice);
+      } else if (sortOption === 'Newest Arrives') {
+        products = products.sort((a, b) => new Date(b.date) - new Date(a.date));
       }
+
+      setAllProducts(products);
     };
 
     fetchAllProducts();
-  }, [axiosSecure]);
+  }, [axiosSecure, sortOption]);
+
 
   const handleBuyNow = productId => {
     navigate(`/Product/${productId}`);
@@ -64,9 +72,34 @@ const AllProductsCard = () => {
 
   return (
     <div className="p-10">
-      <h2 className="text-2xl mb-4 font-serif font-semibold">
-        Necessary {allProducts.length} Items
-      </h2>
+      <div className="flex justify-between">
+        <h2 className="text-2xl mb-4 font-serif font-semibold">
+          Showing {allProducts.length} Items
+        </h2>
+        <div className="dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="w-full bg-[#ff6221] text-white p-2 rounded-md"
+          >
+            {sortOption || 'Recommended'}
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+          >
+            <li onClick={() => setSortOption('Low to High')}>
+              <a>Low to High</a>
+            </li>
+            <li onClick={() => setSortOption('High to Low')}>
+              <a>High to Low</a>
+            </li>
+            <li onClick={() => setSortOption('Newest Arrives')}>
+              <a>Newest Arrives</a>
+            </li>
+          </ul>
+        </div>
+      </div>
       <hr />
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 mt-4">
         {records.map(product => {
