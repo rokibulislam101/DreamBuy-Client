@@ -2,9 +2,9 @@
 
 <p># Locally project running setup</p>
 
-git clone git-link
+git clone <repository-url>
 
-cd your-repository
+cd <project-directory>
 
 npm install
 
