@@ -72,8 +72,8 @@ const AllProductsCard = () => {
 
   return (
     <div className="p-10">
-      <div className="flex justify-between">
-        <h2 className="text-2xl mb-4 font-serif font-semibold">
+      <div className="flex mb-4 justify-between items-center">
+        <h2 className="text-2xl font-serif font-semibold">
           Showing {allProducts.length} Items
         </h2>
         <div className="dropdown dropdown-end">
@@ -114,8 +114,8 @@ const AllProductsCard = () => {
               className="h-full shadow hover:shadow-lg hover:border p-4 transition-all group"
             >
               <div className="relative">
-                <div className="absolute flex justify-between items-center w-full px-2">
-                  <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute flex justify-between items-center w-full px-0 md:px-2">
+                  <div className="flex justify-start gap-2 md:gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div
                       className="flex items-center justify-center"
                       onClick={() => handleAddToWishlist(product)}
