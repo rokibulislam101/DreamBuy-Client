@@ -9,9 +9,15 @@ import {
 
 const AllProductsCard = () => {
   const [allProducts, setAllProducts] = useState([]);
-  const [visibleProducts, setVisibleProducts] = useState(24);
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 12;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const records = allProducts.slice(firstIndex, lastIndex);
+  const nPage = Math.ceil(allProducts.length / recordsPerPage);
+  const numbers = [...Array(nPage + 1).keys()].slice(1);
 
   const { cartDispatch } = useContext(CartContext);
   const { wishlistDispatch } = useContext(WishlistContext);
@@ -29,10 +35,6 @@ const AllProductsCard = () => {
     fetchAllProducts();
   }, [axiosSecure]);
 
-  const handleShowMore = () => {
-    setVisibleProducts(prevVisible => prevVisible + 12);
-  };
-
   const handleBuyNow = productId => {
     navigate(`/Product/${productId}`);
   };
@@ -44,6 +46,22 @@ const AllProductsCard = () => {
     });
   };
 
+  function prePage() {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
+  function changePage(_id) {
+    setCurrentPage(_id);
+  }
+
+  function nextPage() {
+    if (currentPage !== nPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
   return (
     <div className="p-10">
       <h2 className="text-2xl mb-4 font-serif font-semibold">
@@ -51,7 +69,7 @@ const AllProductsCard = () => {
       </h2>
       <hr />
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 mt-4">
-        {allProducts.slice(0, visibleProducts).map(product => {
+        {records.map(product => {
           const discountPercentage = (
             ((product.price - product.discountPrice) / product.price) *
             100
@@ -117,16 +135,40 @@ const AllProductsCard = () => {
           );
         })}
       </div>
-      {visibleProducts < allProducts.length && (
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={handleShowMore}
-            className="px-4 py-2 bg-[#fc6221] text-white rounded font-semibold"
-          >
-            Show More
-          </button>
-        </div>
-      )}
+
+      <div className="flex justify-center items-center my-10">
+        <button
+          className="bg-[#ff6221] text-white px-4 py-2 rounded-l-lg hover:bg-orange-700"
+          onClick={prePage}
+        >
+          &lt; Previous
+        </button>
+        <ul className="flex">
+          {numbers.map((n, product) => (
+            <li
+              key={product}
+              className={`mx-1 ${
+                currentPage === n
+                  ? 'bg-[#ff6221] text-white'
+                  : 'bg-[#ffb08f] text-white hover:bg-[#ff6221]'
+              }`}
+            >
+              <button
+                className="px-4 py-2 rounded-none"
+                onClick={() => changePage(n)}
+              >
+                {n}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button
+          className="bg-[#ff6221] text-white px-4 py-2 rounded-r-lg hover:bg-orange-700"
+          onClick={nextPage}
+        >
+          Next &gt;
+        </button>
+      </div>
     </div>
   );
 };

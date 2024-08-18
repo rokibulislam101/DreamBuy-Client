@@ -47,7 +47,7 @@ const SomeProducts = () => {
       </div>
       <hr />
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 mt-4">
-        {products.slice(0, 24).map(product => {
+        {products.slice(0, 12).map(product => {
           const discountPercentage = (
             ((product.price - product.discountPrice) / product.price) *
             100
