@@ -12,4 +12,4 @@ npm run dev
 
 DreamBuy-Client- (https://github.com/rokibulislam101/DreamBuy-Client),
 
-DreamBuy Live Site- (https://resonant-bonbon-f6dc6a.netlify.app/).
+DreamBuy Live Site- (https://resonant-bonbon-f6dc6a.netlify.app).
